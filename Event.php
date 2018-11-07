@@ -42,6 +42,11 @@ class Event implements EventInterface
         return $this->context;
     }
 
+    public function setPipelines(array $pipelines): void
+    {
+        $this->pipelines = $pipelines;
+    }
+
     public function addContext(string $key, string $value)
     {
         if (!isset($this->context[$key])) {

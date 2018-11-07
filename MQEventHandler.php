@@ -5,7 +5,7 @@ namespace go1\util\publishing\event;
 use go1\util\queue\Queue;
 use Exception;
 
-class MQEvent implements MQEventInterface
+class MQEventHandler implements MQEventHandlerInterface
 {
     public function process(EventInterface $event): EventInterface
     {

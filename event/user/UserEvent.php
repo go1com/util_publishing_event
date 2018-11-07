@@ -1,6 +1,6 @@
 <?php
 
-namespace go1\util\publishing\event\user;
+namespace go1\util\publishing\event\event\user;
 
 use Doctrine\DBAL\Connection;
 use go1\util\publishing\event\Event;

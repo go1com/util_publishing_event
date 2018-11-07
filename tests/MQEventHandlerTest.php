@@ -3,15 +3,15 @@
 namespace go1\util\publishing\event\tests;
 
 use go1\util\publishing\event\Event;
-use go1\util\publishing\event\MQEvent;
+use go1\util\publishing\event\MQEventHandler;
 
-class MQEventTest extends PublishingEventTestCase
+class MQEventHandlerTest extends PublishingEventTestCase
 {
     public function test()
     {
         $event = new Event([], 'routingKey');
         try {
-            (new MQEvent)->process($event);
+            (new MQEventHandler)->process($event);
             $this->assertTrue(true);
         } catch (\Exception $e) {
             $this->assertTrue(false);
@@ -25,7 +25,7 @@ class MQEventTest extends PublishingEventTestCase
 
         $event = new Event($payload, 'message.update');
         try {
-            (new MQEvent)->process($event);
+            (new MQEventHandler)->process($event);
             $this->assertTrue(true);
         } catch (\Exception $e) {
             $this->assertTrue(false);
@@ -38,7 +38,7 @@ class MQEventTest extends PublishingEventTestCase
 
         $event = new Event($payload, 'message.update');
         try {
-            (new MQEvent)->process($event);
+            (new MQEventHandler)->process($event);
             $this->assertTrue(false);
         } catch (\Exception $e) {
             $this->assertTrue(true);

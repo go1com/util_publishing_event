@@ -9,5 +9,5 @@ Publishing Event [![Build Status](https://travis-ci.org/go1com/util_publishing_e
 $event = new UserEvent($payload, $routingKey, $context);
 $event->pipelines($connection, $request);
 
-$message = (new MQEvent)->process($event);
+$message = (new MQEventHandler)->process($event);
 ``` 
