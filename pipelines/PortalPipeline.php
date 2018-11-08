@@ -18,32 +18,22 @@ class PortalPipeline implements EventPipelineInterface
     protected $portalTitle;
     protected $portal;
 
-    public function setDb(Connection $db): self
+    public function __construct(Connection $db = null, string $portalTitle = null)
     {
         $this->db = $db;
-
-        return $this;
-    }
-
-    public function setPortalTitle(string $portalTitle): self
-    {
         $this->portalTitle = $portalTitle;
-
-        return $this;
     }
 
-    public function setPortal($portal): self
+    public function setPortal($portal): void
     {
         $this->portal = $portal;
-
-        return $this;
     }
 
     public function embed(EventInterface $event): void
     {
         $payload = $event->getPayload();
         if (!isset($payload['embedded']['portal'])) {
-            $portal = $this->portal ?? PortalHelper::load($this->db, $this->portalTitle);
+            $portal = $this->portal ?? ($this->db ? PortalHelper::load($this->db, $this->portalTitle) : null);
             if ($portal) {
                 $event->addEmbedded('portal', $portal);
             }

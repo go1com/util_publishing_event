@@ -2,14 +2,14 @@
 
 namespace go1\util\publishing\event\tests\user;
 
-use go1\util\publishing\event\event\user\UserEvent;
-use go1\util\publishing\event\MQEventHandler;
+use go1\util\publishing\event\Event;
+use go1\util\publishing\event\handler\user\UserEventHandler;
 use go1\util\publishing\event\tests\PublishingEventTestCase;
 use go1\util\schema\mock\PortalMockTrait;
 use go1\util\schema\mock\UserMockTrait;
 use go1\util\user\UserHelper;
 
-class UserEventTest extends PublishingEventTestCase
+class UserEventHandlerTest extends PublishingEventTestCase
 {
     use UserMockTrait;
     use PortalMockTrait;
@@ -35,17 +35,12 @@ class UserEventTest extends PublishingEventTestCase
 
         $userId = $this->createUser($this->db, $data);
         $user = UserHelper::load($this->db, $userId);
-        $event = new UserEvent($user, 'user.create');
-        $event->setDb($this->db);
-        $event->pipelines();
 
-        try {
-            $newEvent = (new MQEventHandler)->process($event);
-        } catch (\Exception $e) {
-            $this->assertTrue(false);
-        }
-
+        $event = new Event($user, 'user.create');
+        $handler = new UserEventHandler($this->db);
+        $newEvent = $handler->process($event);
         $payload = $newEvent->getPayload();
+
         $this->assertEquals($userId, $payload['id']);
         $this->assertEquals($this->portalTitle, $payload['embedded']['portal']->title);
     }

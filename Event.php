@@ -11,14 +11,13 @@ class Event implements EventInterface
     const CONTEXT_REQUEST_ID    = 'request_id';
     const CONTEXT_TIMESTAMP     = 'timestamp';
 
-    protected $routingKey;
+    protected $subject;
     protected $payload;
     protected $context = [];
-    protected $pipelines = [];
 
     public function __construct($payload, string $routingKey, array $context = [])
     {
-        $this->routingKey = $routingKey;
+        $this->subject = $routingKey;
         $this->payload = is_scalar($payload) ? json_decode($payload, true) : (is_object($payload) ? ((array) $payload) : $payload);
         $this->context = $context;
 
@@ -27,9 +26,9 @@ class Event implements EventInterface
         }
     }
 
-    public function getRoutingKey(): string
+    public function getSubject(): string
     {
-        return $this->routingKey;
+        return $this->subject;
     }
 
     public function getPayload(): array
@@ -42,12 +41,7 @@ class Event implements EventInterface
         return $this->context;
     }
 
-    public function setPipelines(array $pipelines = []): void
-    {
-        $this->pipelines = $pipelines;
-    }
-
-    public function addContext(string $key, string $value): void
+    public function addContext(string $key, $value): void
     {
         if (!isset($this->context[$key])) {
             $this->context[$key] = $value;
@@ -59,12 +53,12 @@ class Event implements EventInterface
         $this->payload['embedded'][$key] = $value;
     }
 
-    public function embedded(): void
+    public function embedded(array $pipelines = []): void
     {
         /**
          * @var EventPipelineInterface $pipeline
          */
-        foreach ($this->pipelines as $pipeline) {
+        foreach ($pipelines as $pipeline) {
             $pipeline->embed($this);
         }
     }

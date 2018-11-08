@@ -5,19 +5,19 @@ namespace go1\util\publishing\event;
 use go1\util\queue\Queue;
 use Exception;
 
-class MQEventHandler implements MQEventHandlerInterface
+class EventHandler implements EventHandlerInterface
 {
-    public function process(EventInterface $event): EventInterface
+    public function process(EventInterface $event, array $pipelines = []): EventInterface
     {
-        if ($event->getRoutingKey() == Queue::QUIZ_USER_ANSWER_UPDATE) {
+        if ($event->getSubject() == Queue::QUIZ_USER_ANSWER_UPDATE) {
             return null;
         }
 
-        $explode = explode('.', $event->getRoutingKey());
+        $explode = explode('.', $event->getSubject());
         $isLazy = isset($explode[0]) && ('do' == $explode[0]);
 
-        if (strpos($event->getRoutingKey(), '.update') && !$isLazy) {
-            if (substr($event->getRoutingKey(), 0, 5) === 'post_') {
+        if (strpos($event->getSubject(), '.update') && !$isLazy) {
+            if (substr($event->getSubject(), 0, 5) === 'post_') {
                 return null;
             }
 
@@ -34,7 +34,7 @@ class MQEventHandler implements MQEventHandlerInterface
         }
         $event->addContext(Event::CONTEXT_TIMESTAMP, time());
 
-        $event->embedded();
+        !empty($pipelines) && $event->embedded($pipelines);
 
         return $event;
     }

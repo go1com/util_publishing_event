@@ -1,9 +1,10 @@
 <?php
 
-namespace go1\util\publishing\event\event\user;
+namespace go1\util\publishing\event\handler\user;
 
 use Doctrine\DBAL\Connection;
-use go1\util\publishing\event\Event;
+use go1\util\publishing\event\EventHandler;
+use go1\util\publishing\event\EventInterface;
 use go1\util\publishing\event\pipelines\JWTPipeline;
 use go1\util\publishing\event\pipelines\PortalPipeline;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,27 +15,19 @@ use Symfony\Component\HttpFoundation\Request;
  * Embed the portal data
  * Embed the the user jwt if given the request
  *
- * Class UserEvent
+ * Class UserEventHandler
  * @package go1\util\publishing\event\event\user
  */
-class UserEvent extends Event
+class UserEventHandler extends EventHandler
 {
     protected $db;
     protected $req;
     protected $portal;
 
-    public function setDb(Connection $db): self
+    public function __construct(Connection $db = null, Request $req = null)
     {
         $this->db = $db;
-
-        return $this;
-    }
-
-    public function setReq(Request $req): self
-    {
         $this->req = $req;
-
-        return $this;
     }
 
     public function setPortal($portal): self
@@ -44,21 +37,20 @@ class UserEvent extends Event
         return $this;
     }
 
-    public function pipelines(): void
+    public function process(EventInterface $event, array $pipelines = []): EventInterface
     {
-        $payload = $this->getPayload();
+        $payload = $event->getPayload();
 
-        $portalPipe = new PortalPipeline;
+        $portalPipe = new PortalPipeline($this->db, $payload['instance']);
         if ($this->portal) {
             $portalPipe->setPortal($this->portal);
-        } else {
-            $portalPipe->setDb($this->db)
-                ->setPortalTitle($payload['instance']);
         }
 
         $pipelines = [$portalPipe];
         $this->req && ($pipelines[] = new JWTPipeline($this->req, $payload['instance']));
 
-        $this->setPipelines($pipelines);
+        $event = parent::process($event, $pipelines);
+
+        return $event;
     }
 }
