@@ -8,14 +8,57 @@ use go1\util\publishing\event\pipelines\JWTPipeline;
 use go1\util\publishing\event\pipelines\PortalPipeline;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Process the user event before adding to the queue
+ *
+ * Embed the portal data
+ * Embed the the user jwt if given the request
+ *
+ * Class UserEvent
+ * @package go1\util\publishing\event\event\user
+ */
 class UserEvent extends Event
 {
-    public function pipelines(Connection $db, Request $req = null): void
+    protected $db;
+    protected $req;
+    protected $portal;
+
+    public function setDb(Connection $db): self
+    {
+        $this->db = $db;
+
+        return $this;
+    }
+
+    public function setReq(Request $req): self
+    {
+        $this->req = $req;
+
+        return $this;
+    }
+
+    public function setPortal($portal): self
+    {
+        $this->portal = $portal;
+
+        return $this;
+    }
+
+    public function pipelines(): void
     {
         $payload = $this->getPayload();
-        $this->pipelines = [
-            new PortalPipeline($db, $payload['instance'])
-        ];
-        $req && ($this->pipelines[] = new JWTPipeline($req, $payload['instance']));
+
+        $portalPipe = new PortalPipeline;
+        if ($this->portal) {
+            $portalPipe->setPortal($this->portal);
+        } else {
+            $portalPipe->setDb($this->db)
+                ->setPortalTitle($payload['instance']);
+        }
+
+        $pipelines = [$portalPipe];
+        $this->req && ($pipelines[] = new JWTPipeline($this->req, $payload['instance']));
+
+        $this->setPipelines($pipelines);
     }
 }

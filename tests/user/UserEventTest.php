@@ -36,7 +36,8 @@ class UserEventTest extends PublishingEventTestCase
         $userId = $this->createUser($this->db, $data);
         $user = UserHelper::load($this->db, $userId);
         $event = new UserEvent($user, 'user.create');
-        $event->pipelines($this->db);
+        $event->setDb($this->db);
+        $event->pipelines();
 
         try {
             $newEvent = (new MQEventHandler)->process($event);

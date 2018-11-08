@@ -4,7 +4,6 @@ namespace go1\util\publishing\event;
 
 interface EventInterface
 {
-
     public function embedded();
 
     public function getRoutingKey(): string;
@@ -17,5 +16,5 @@ interface EventInterface
 
     public function addEmbedded(string $key, $value);
 
-
+    public function setPipelines(array $pipelines): void;
 }

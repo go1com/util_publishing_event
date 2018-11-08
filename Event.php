@@ -42,24 +42,24 @@ class Event implements EventInterface
         return $this->context;
     }
 
-    public function setPipelines(array $pipelines): void
+    public function setPipelines(array $pipelines = []): void
     {
         $this->pipelines = $pipelines;
     }
 
-    public function addContext(string $key, string $value)
+    public function addContext(string $key, string $value): void
     {
         if (!isset($this->context[$key])) {
             $this->context[$key] = $value;
         }
     }
 
-    public function addEmbedded(string $key, $value)
+    public function addEmbedded(string $key, $value): void
     {
         $this->payload['embedded'][$key] = $value;
     }
 
-    public function embedded()
+    public function embedded(): void
     {
         /**
          * @var EventPipelineInterface $pipeline

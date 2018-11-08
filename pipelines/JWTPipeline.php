@@ -6,6 +6,12 @@ use go1\util\AccessChecker;
 use go1\util\publishing\event\EventInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Embed the user jwt to the event payload
+ *
+ * Class JWTPipeline
+ * @package go1\util\publishing\event\pipelines
+ */
 class JWTPipeline implements EventPipelineInterface
 {
     private $req;
