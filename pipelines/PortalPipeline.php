@@ -24,7 +24,7 @@ class PortalPipeline implements EventPipelineInterface
         $this->portalTitle = $portalTitle;
     }
 
-    public function setPortal($portal): void
+    public function setPortal(\stdClass $portal): void
     {
         $this->portal = $portal;
     }

@@ -30,7 +30,7 @@ class UserEventHandler extends EventHandler
         $this->req = $req;
     }
 
-    public function setPortal($portal): self
+    public function setPortal(\stdClass $portal): self
     {
         $this->portal = $portal;
 
