@@ -35,7 +35,7 @@ class PortalPipeline implements EventPipelineInterface
         if (!isset($payload['embedded']['portal'])) {
             $portal = $this->portal ?? ($this->db ? PortalHelper::load($this->db, $this->portalTitle) : null);
             if ($portal) {
-                $event->addEmbedded('portal', $portal);
+                $event->addPayloadEmbed('portal', $portal);
             }
         }
     }

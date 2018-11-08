@@ -29,7 +29,7 @@ class JWTPipeline implements EventPipelineInterface
         if (!isset($payload['embedded']['jwt']['user'])) {
             $user = (new AccessChecker)->validUser($this->req, $this->portalTitle);
             if ($user) {
-                $event->addEmbedded('jwt', ['user' => $user]);
+                $event->addPayloadEmbed('jwt', ['user' => $user]);
             }
         }
     }

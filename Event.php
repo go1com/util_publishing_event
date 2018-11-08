@@ -48,12 +48,12 @@ class Event implements EventInterface
         }
     }
 
-    public function addEmbedded(string $key, $value): void
+    public function addPayloadEmbed(string $key, $value): void
     {
         $this->payload['embedded'][$key] = $value;
     }
 
-    public function embedded(array $pipelines = []): void
+    public function embed(array $pipelines = []): void
     {
         /**
          * @var EventPipelineInterface $pipeline

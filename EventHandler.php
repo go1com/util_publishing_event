@@ -34,7 +34,7 @@ class EventHandler implements EventHandlerInterface
         }
         $event->addContext(Event::CONTEXT_TIMESTAMP, time());
 
-        !empty($pipelines) && $event->embedded($pipelines);
+        !empty($pipelines) && $event->embed($pipelines);
 
         return $event;
     }

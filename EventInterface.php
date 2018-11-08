@@ -39,12 +39,12 @@ interface EventInterface
      * @param string $key
      * @param $value
      */
-    public function addEmbedded(string $key, $value): void;
+    public function addPayloadEmbed(string $key, $value): void;
 
     /**
      * Embed the event payload by the given pipelines
      *
      * @param array $pipelines
      */
-    public function embedded(array $pipelines): void;
+    public function embed(array $pipelines): void;
 }
