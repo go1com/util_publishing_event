@@ -9,4 +9,11 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <file>Event.php</file>
+            <file>EventHandler.php</file>
+            <file>EventPipeline.php</file>
+        </whitelist>
+    </filter>
 </phpunit>

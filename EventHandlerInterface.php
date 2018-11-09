@@ -4,7 +4,6 @@ namespace go1\util\publishing\event;
 
 /**
  * Interface EventHandlerInterface
- * @package go1\util\publishing\event
  */
 interface EventHandlerInterface
 {

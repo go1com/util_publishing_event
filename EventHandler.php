@@ -13,13 +13,10 @@ class EventHandler implements EventHandlerInterface
         $isLazy = isset($explode[0]) && ('do' == $explode[0]);
 
         if (strpos($event->getSubject(), '.update') && !$isLazy) {
-            if (substr($event->getSubject(), 0, 5) === 'post_') {
-                return $event;
-            }
-
             $validKeys = array_filter($event->getPayload(), function ($value, $key) {
                 return (in_array($key, ['id', 'original']) && $value);
             }, ARRAY_FILTER_USE_BOTH);
+
             if (count($validKeys) !== 2) {
                 throw new Exception("Missing entity ID or original data.");
             }
