@@ -10,7 +10,7 @@ class EventHandler implements EventHandlerInterface
     public function process(EventInterface $event, array $pipelines = []): EventInterface
     {
         if ($event->getSubject() == Queue::QUIZ_USER_ANSWER_UPDATE) {
-            return null;
+            return $event;
         }
 
         $explode = explode('.', $event->getSubject());
@@ -18,7 +18,7 @@ class EventHandler implements EventHandlerInterface
 
         if (strpos($event->getSubject(), '.update') && !$isLazy) {
             if (substr($event->getSubject(), 0, 5) === 'post_') {
-                return null;
+                return $event;
             }
 
             $validKeys = array_filter($event->getPayload(), function ($value, $key) {

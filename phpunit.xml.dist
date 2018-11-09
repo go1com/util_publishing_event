@@ -9,12 +9,4 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>./pipelines</directory>
-            <directory>./event</directory>
-            <file>MQEventHandler.php</file>
-            <file>Event.php</file>
-        </whitelist>
-    </filter>
 </phpunit>

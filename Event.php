@@ -2,7 +2,7 @@
 
 namespace go1\util\publishing\event;
 
-use go1\util\publishing\event\pipelines\EventPipelineInterface;
+use go1\util\publishing\event\pipeline\EventPipelineInterface;
 
 class Event implements EventInterface
 {

@@ -5,8 +5,8 @@ namespace go1\util\publishing\event\handler\user;
 use Doctrine\DBAL\Connection;
 use go1\util\publishing\event\EventHandler;
 use go1\util\publishing\event\EventInterface;
-use go1\util\publishing\event\pipelines\JWTPipeline;
-use go1\util\publishing\event\pipelines\PortalPipeline;
+use go1\util\publishing\event\pipeline\JWTPipeline;
+use go1\util\publishing\event\pipeline\PortalPipeline;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

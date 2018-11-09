@@ -1,8 +1,6 @@
 <?php
 
-namespace go1\util\publishing\event\pipelines;
-
-use go1\util\publishing\event\EventInterface;
+namespace go1\util\publishing\event;
 
 interface EventPipelineInterface
 {
