@@ -7,5 +7,9 @@ Publishing Event [![Build Status](https://travis-ci.org/go1com/util_publishing_e
 ## Usage
 ```
 $event = new Event($payload, 'message.update');
-$newEvent = (new EventHandler)->process($event);
+$pipes = [];
+........
+$pipes[] = new EventPipeline('type', ['id' => 100]);
+
+$newEvent = (new EventHandler)->process($event, $pipes);
 ```
