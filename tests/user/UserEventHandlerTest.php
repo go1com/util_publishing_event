@@ -2,6 +2,7 @@
 
 namespace go1\util\publishing\event\tests\user;
 
+use go1\util\portal\PortalHelper;
 use go1\util\publishing\event\Event;
 use go1\util\publishing\event\handler\user\UserEventHandler;
 use go1\util\publishing\event\tests\PublishingEventTestCase;
@@ -14,13 +15,14 @@ class UserEventHandlerTest extends PublishingEventTestCase
     use UserMockTrait;
     use PortalMockTrait;
 
-    private $mail       = 'abc@mail.com';
-    private $profileId  = 123;
-    private $portalTitle   = 'qa.mygo1.com';
+    private $mail           = 'abc@mail.com';
+    private $profileId      = 123;
+    private $portalName     = 'qa.mygo1.com';
+    private $accountsName   = 'accounts.dev.go1.com';
 
     public function testFormat()
     {
-        $this->createPortal($this->db, ['title' => $this->portalTitle]);
+        $this->createPortal($this->db, ['title' => $this->portalName]);
         $data = [
             'mail'       => $this->mail,
             'profile_id' => $this->profileId,
@@ -30,18 +32,36 @@ class UserEventHandlerTest extends PublishingEventTestCase
             'first_name' => 'Bob',
             'last_name'  => 'Bay',
             'status'     => 1,
-            'instance'   => $this->portalTitle
+            'instance'   => $this->portalName
         ];
+        $accountId = $this->createUser($this->db, $data);
+        $account = UserHelper::load($this->db, $accountId);
 
-        $userId = $this->createUser($this->db, $data);
-        $user = UserHelper::load($this->db, $userId);
+        $userData = $data;
+        $userData['instance'] = $this->accountsName;
+        $userId = $this->createUser($this->db, $userData);
 
-        $event = new Event($user, 'user.create');
-        $handler = new UserEventHandler($this->db);
+        $event = new Event($account, 'user.create');
+
+        // Using connection
+        $handler = new UserEventHandler($this->db, $this->accountsName);
         $newEvent = $handler->process($event);
         $payload = $newEvent->getPayload();
 
-        $this->assertEquals($userId, $payload['id']);
-        $this->assertEquals($this->portalTitle, $payload['embedded']['portal']->title);
+        $this->assertEquals($accountId, $payload['id']);
+        $this->assertEquals($this->portalName, $payload['embedded']['portal'][0]->title);
+        $this->assertEquals($userId, $payload['embedded']['user_id'][0]);
+
+        // Using set object
+
+        $portal = PortalHelper::load($this->db, $this->portalName);
+        $handler = new UserEventHandler();
+        $handler->setPortal($portal);
+        $handler->setUserId($userId);
+        $newEvent = $handler->process($event);
+        $payload = $newEvent->getPayload();
+
+        $this->assertEquals($this->portalName, $payload['embedded']['portal'][0]->title);
+        $this->assertEquals($userId, $payload['embedded']['user_id'][0]);
     }
 }

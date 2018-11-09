@@ -2,7 +2,7 @@
 
 namespace go1\util\publishing\event;
 
-abstract class EventPipeline implements EventPipelineInterface
+class EventPipeline implements EventPipelineInterface
 {
     protected $type;
     protected $embeds;

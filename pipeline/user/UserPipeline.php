@@ -19,7 +19,7 @@ class UserPipeline extends EventPipeline
     {
         $embeds = [];
         if ($db && !empty($ids)) {
-            $embeds[] = UserHelper::loadMultiple($db, $ids);
+            $embeds = UserHelper::loadMultiple($db, $ids);
         }
 
         parent::__construct($type, $embeds);

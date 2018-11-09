@@ -11,11 +11,11 @@ use go1\util\publishing\event\EventPipeline;
  */
 class EckPipeline extends EventPipeline
 {
-    public function __construct(Connection $db = null, \stdClass $portal = null, int $userId = 0)
+    public function __construct(Connection $db = null, \stdClass $portal = null, int $accountId = 0)
     {
         $embeds = [];
-        if ($db && $portal && $userId) {
-            $entity = EckHelper::load($db, $portal->title, 'account', $userId);
+        if ($db && $portal && $accountId) {
+            $entity = EckHelper::load($db, $portal->title, 'account', $accountId);
             $entity = json_decode(json_encode($entity));
             $embeds = $this->format($db, $portal->id, $entity);
         }
