@@ -1,0 +1,17 @@
+{
+  "name":              "go1/util_publishing_event",
+  "license":           "proprietary",
+  "prefer-stable":     true,
+  "minimum-stability": "stable",
+  "autoload":          {
+    "psr-4": {
+      "go1\\util\\publishing\\event\\": "./"
+    }
+  },
+  "require":           {
+    "php":                      "^7.2",
+    "go1/util_core":            "dev-master",
+    "doctrine/dbal":            "^2.8.0",
+    "symfony/http-foundation":  "^4.0 | ^3.4"
+  }
+}

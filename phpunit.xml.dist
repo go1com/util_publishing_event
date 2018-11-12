@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpunit
+        colors="true"
+        bootstrap="vendor/autoload.php"
+        stopOnFailure="true">
+    <testsuites>
+        <testsuite name="util_publishing_event">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <file>Event.php</file>
+            <file>EventHandler.php</file>
+            <file>EventPipeline.php</file>
+        </whitelist>
+    </filter>
+</phpunit>
